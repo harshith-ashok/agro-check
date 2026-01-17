@@ -18,6 +18,8 @@ This platform is designed for precision agriculture, research institutions, gree
 
 ---
 
+## ![Frontend Screenshot](https://github.com/harshith-ashok/agro-check/raw/master/assets/readme-ss.png)
+
 ## Overview
 
 The AgriTech Dashboard provides a full-stack solution for monitoring agricultural environments using IoT sensor nodes. It offers real-time visualization, historical analytics, intelligent recommendations, and a scalable backend architecture.

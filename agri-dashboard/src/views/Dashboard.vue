@@ -4,8 +4,8 @@
       <header class="mb-8">
         <div class="flex items-center justify-between mb-6">
           <div>
-            <h1 class="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-500 bg-clip-text text-transparent tracking-tight">
-              AgriTech Dashboard
+            <h1 class="text-4xl bg-gradient-to-r from-emerald-600 to-emerald-500 pb-1 tracking-wide uppercase font-black bg-clip-text text-transparent tracking-tight">
+              AgroCheck
             </h1>
             <p class="text-gray-600 mt-2">Monitor your systems in real-time</p>
           </div>
