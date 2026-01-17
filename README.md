@@ -1,6 +1,6 @@
-
 # Agro Check
-## AgriTech Monitoring & Analytics Dashboard
+
+> AgriTech Monitoring & Analytics Dashboard
 
 A modern, real-time agricultural monitoring platform for tracking soil conditions, environmental metrics, and system health across distributed IoT sensor networks.
 
@@ -20,39 +20,39 @@ The system is built for production usage with strong security, modular architect
 
 ### Real-Time Monitoring
 
-* Live sensor data ingestion with automated 10-minute refresh cycles
-* Multi-system dashboard with system-level status tracking
-* Health indicators based on agricultural best practices
-* Online, warning, and offline detection based on last update time
+- Live sensor data ingestion with automated 10-minute refresh cycles
+- Multi-system dashboard with system-level status tracking
+- Health indicators based on agricultural best practices
+- Online, warning, and offline detection based on last update time
 
 ### Analytics & Insights
 
-* Interactive charts for soil moisture, temperature, humidity, and battery health
-* Historical trend analysis with configurable retention
-* Crop health index derived from multiple sensor parameters
-* Searchable and sortable system and sensor data tables
+- Interactive charts for soil moisture, temperature, humidity, and battery health
+- Historical trend analysis with configurable retention
+- Crop health index derived from multiple sensor parameters
+- Searchable and sortable system and sensor data tables
 
 ### Smart Recommendations
 
-* Context-aware agronomic suggestions
-* Critical alerts for low moisture, extreme temperatures, and poor soil pH
-* Battery health and solar charging diagnostics
-* Preventive maintenance indicators
+- Context-aware agronomic suggestions
+- Critical alerts for low moisture, extreme temperatures, and poor soil pH
+- Battery health and solar charging diagnostics
+- Preventive maintenance indicators
 
 ### Security & Scalability
 
-* JWT-based authentication and authorization
-* User-level system isolation
-* RESTful API architecture
-* Automatic sensor polling and validation
-* Horizontal scalability-ready backend design
+- JWT-based authentication and authorization
+- User-level system isolation
+- RESTful API architecture
+- Automatic sensor polling and validation
+- Horizontal scalability-ready backend design
 
 ### UI & Experience
 
-* Responsive design across mobile, tablet, and desktop
-* Minimalist, professional interface
-* Smooth animations for data transitions
-* Clean typography and spacing using Tailwind CSS
+- Responsive design across mobile, tablet, and desktop
+- Minimalist, professional interface
+- Smooth animations for data transitions
+- Clean typography and spacing using Tailwind CSS
 
 ---
 
@@ -60,20 +60,20 @@ The system is built for production usage with strong security, modular architect
 
 ### Frontend
 
-* Vue 3 (Composition API with `<script setup>`)
-* Vue Router
-* Tailwind CSS v4 (CSS-based theming via `@theme`)
-* Chart.js for visualization
-* GSAP for animations
-* Axios for API communication
+- Vue 3 (Composition API with `<script setup>`)
+- Vue Router
+- Tailwind CSS v4 (CSS-based theming via `@theme`)
+- Chart.js for visualization
+- GSAP for animations
+- Axios for API communication
 
 ### Backend
 
-* Node.js with Express
-* MySQL (connection pooling via mysql2)
-* JWT authentication
-* bcrypt password hashing
-* Axios for external sensor API polling
+- Node.js with Express
+- MySQL (connection pooling via mysql2)
+- JWT authentication
+- bcrypt password hashing
+- Axios for external sensor API polling
 
 ---
 
@@ -81,9 +81,9 @@ The system is built for production usage with strong security, modular architect
 
 ### Prerequisites
 
-* Node.js 18+
-* MySQL 8.0+
-* npm or yarn
+- Node.js 18+
+- MySQL 8.0+
+- npm or yarn
 
 ---
 
@@ -235,19 +235,19 @@ This can be modified in `server.js` if your sensor API uses a different structur
 
 ### Overview Dashboard
 
-* Total systems summary
-* Average environmental metrics
-* System grid with real-time status
-* Quick actions for system management
+- Total systems summary
+- Average environmental metrics
+- System grid with real-time status
+- Quick actions for system management
 
 ### System Detail View
 
-* Critical alerts panel
-* Soil moisture visualization
-* Battery, pH, and solar diagnostics
-* Crop health index chart
-* Environmental conditions
-* Historical trends and data tables
+- Critical alerts panel
+- Soil moisture visualization
+- Battery, pH, and solar diagnostics
+- Crop health index chart
+- Environmental conditions
+- Historical trends and data tables
 
 ---
 
@@ -317,22 +317,28 @@ pm2 start server.js --name agritech-api
 
 ### Production Checklist
 
-* Use a strong JWT secret
-* Secure MySQL credentials
-* Enable HTTPS
-* Configure database backups
-* Use reverse proxy (Nginx/Apache)
-* Enable monitoring and logging
+- Use a strong JWT secret
+- Secure MySQL credentials
+- Enable HTTPS
+- Configure database backups
+- Use reverse proxy (Nginx/Apache)
+- Enable monitoring and logging
 
 ---
 
 ## Use Cases
 
-* Precision agriculture deployments
-* Smart greenhouse management
-* Agricultural research and experimentation
-* University and educational projects
-* Environmental monitoring systems
+- Precision agriculture deployments
+- Smart greenhouse management
+- Agricultural research and experimentation
+- University and educational projects
+- Environmental monitoring systems
 
 ---
 
+## TODO
+
+- [ ] Add all-in-one script for local development
+- [ ] Docker images
+- [ ] AI backend for richer warnings and mitigations
+- [ ] AI-based crop support for more information
