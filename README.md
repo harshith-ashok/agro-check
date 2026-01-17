@@ -18,7 +18,7 @@ This platform is designed for precision agriculture, research institutions, gree
 
 ---
 
-## ![Frontend Screenshot](https://github.com/harshith-ashok/agro-check/raw/master/assets/readme-ss.png)
+## ![Frontend Screenshot](https://raw.githubusercontent.com/harshith-ashok/agro-check/refs/heads/main/assets/readme-ss.png)
 
 ## Overview
 
