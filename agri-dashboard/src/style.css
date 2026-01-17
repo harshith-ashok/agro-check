@@ -1,51 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
-
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/inter/700.css";
 
 @theme {
   --color-forest: #2d5a27;
-  --color-mint: #a8e6cf;
+  --color-forest-dark: #1f3d1b;
+  --color-mint: #10b981;
+  --color-mint-light: #34d399;
   --radius-xl2: 24px;
 }
 
 body {
   font-family: "Inter", sans-serif;
-  background-color: #f9fafb;
-  color: #111827;
+  background: linear-gradient(to bottom, #f9fafb, #f3f4f6);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-/* Custom scrollbar styles */
 ::-webkit-scrollbar {
   width: 8px;
-  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 10px;
+  background: #cbd5e1;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-/* Smooth transitions for all interactive elements */
-button,
-a,
-input,
-select,
-textarea {
-  transition: all 0.2s ease-in-out;
+  background: #94a3b8;
 }

@@ -1,42 +1,36 @@
-CREATE DATABASE agritech;
+CREATE DATABASE IF NOT EXISTS agritech;
 USE agritech;
-CREATE TABLE users (
+
+CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  identity_code CHAR(6) UNIQUE NOT NULL,
-  email VARCHAR(255),
-  name VARCHAR(255),
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  last_login TIMESTAMP NULL
+  INDEX idx_email (email)
 );
 
-CREATE TABLE systems (
+CREATE TABLE IF NOT EXISTS systems (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id INT,
-  device_id VARCHAR(100) UNIQUE,
-  name VARCHAR(255),
-  region VARCHAR(255),
-  latitude DECIMAL(10,6),
-  longitude DECIMAL(10,6),
-  farm_size FLOAT,
-  crop_type VARCHAR(255),
-  soil_type VARCHAR(255),
-  installation_date DATE,
-  notes TEXT,
-  status ENUM('online','warning','offline') DEFAULT 'offline',
+  user_id INT NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  device_id VARCHAR(100) UNIQUE NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_user_id (user_id),
+  INDEX idx_device_id (device_id)
 );
 
-CREATE TABLE sensor_readings (
+CREATE TABLE IF NOT EXISTS sensor_data (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  system_id INT,
-  device_id VARCHAR(100),
-  soil_moisture FLOAT,
-  soil_ph FLOAT,
-  air_temp FLOAT,
-  humidity FLOAT,
-  battery FLOAT,
-  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (system_id) REFERENCES systems(id) ON DELETE CASCADE
+  system_id INT NOT NULL,
+  soil_moisture DECIMAL(5,2) NOT NULL,
+  soil_ph DECIMAL(3,1) NOT NULL,
+  air_temp DECIMAL(4,1) NOT NULL,
+  humidity INT NOT NULL,
+  battery INT NOT NULL,
+  solar_voltage DECIMAL(3,1) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (system_id) REFERENCES systems(id) ON DELETE CASCADE,
+  INDEX idx_system_created (system_id, created_at)
 );
