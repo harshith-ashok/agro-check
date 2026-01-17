@@ -2,6 +2,16 @@
 
 > AgriTech Monitoring & Analytics Dashboard
 
+![Vue](https://img.shields.io/badge/Vue.js-3.4-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white)
+![Node](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-4.18-000000?style=for-the-badge&logo=express&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind_CSS-4.0-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![ChartJS](https://img.shields.io/badge/Chart.js-4.4-FF6384?style=for-the-badge&logo=chart.js&logoColor=white)
+![JWT](https://img.shields.io/badge/Auth-JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![Version](https://img.shields.io/badge/version%20-v1.0.0-blue?style=for-the-badge)
+
 A modern, real-time agricultural monitoring platform for tracking soil conditions, environmental metrics, and system health across distributed IoT sensor networks.
 
 This platform is designed for precision agriculture, research institutions, greenhouse operators, and smart farming deployments that require reliable data collection, real-time insights, and actionable intelligence.
