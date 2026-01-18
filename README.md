@@ -28,6 +28,35 @@ The system is built for production usage with strong security, modular architect
 
 ---
 
+## Hardware Setup
+
+### Architecture
+
+- Server (gateway/collector): ESP8266
+- Client (nodes/sensor kit): ESP8266
+
+### Sensors
+
+> Current setup
+
+- DHT11 - Temperature and humidity sensor
+- Soil Moisture Sensor - With the 3-way electric module
+- ~~pH sensor~~ Yet to be tested
+- ~~Solar cell~~ Yet to be tested
+- ~~proper battery source~~ Yet to be decided
+
+> NOTE:
+>
+> - WiFi channel is set because of issues while connecting both ESP-NOW and WiFi
+> - Certain delays added to ensure synchronization
+> - JSON data is first NULL Checked to ensure frontend always has content
+
+> [!WARNING]
+> support for other models of ESP and other sensors are yet to be tested. Code given is specific to setup used for RnD
+> Only works with 2.4Ghz WiFi connections (Hardware constraints)
+
+---
+
 ## Key Capabilities
 
 ### Real-Time Monitoring
