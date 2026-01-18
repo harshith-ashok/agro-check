@@ -48,7 +48,7 @@ app.post("/api/auth/register", async (req, res) => {
 
     const [existing] = await pool.query(
       "SELECT id FROM users WHERE email = ?",
-      [email]
+      [email],
     );
     if (existing.length > 0) {
       return res.status(400).json({ error: "Email already exists" });
@@ -57,7 +57,7 @@ app.post("/api/auth/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const [result] = await pool.query(
       "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-      [name, email, hashedPassword]
+      [name, email, hashedPassword],
     );
 
     const token = jwt.sign({ userId: result.insertId }, JWT_SECRET, {
@@ -122,7 +122,7 @@ app.get("/api/systems", authMiddleware, async (req, res) => {
       FROM systems s 
       WHERE s.user_id = ?
       ORDER BY s.created_at DESC`,
-      [req.userId]
+      [req.userId],
     );
 
     const parsedSystems = systems.map((s) => ({
@@ -141,7 +141,7 @@ app.get("/api/systems/:id", authMiddleware, async (req, res) => {
   try {
     const [systems] = await pool.query(
       "SELECT * FROM systems WHERE id = ? AND user_id = ?",
-      [req.params.id, req.userId]
+      [req.params.id, req.userId],
     );
 
     if (systems.length === 0) {
@@ -161,7 +161,7 @@ app.post("/api/systems", authMiddleware, async (req, res) => {
 
     const [result] = await pool.query(
       "INSERT INTO systems (user_id, name, device_id) VALUES (?, ?, ?)",
-      [req.userId, name, device_id]
+      [req.userId, name, device_id],
     );
 
     res.json({ id: result.insertId, name, device_id });
@@ -175,7 +175,7 @@ app.delete("/api/systems/:id", authMiddleware, async (req, res) => {
   try {
     const [system] = await pool.query(
       "SELECT * FROM systems WHERE id = ? AND user_id = ?",
-      [req.params.id, req.userId]
+      [req.params.id, req.userId],
     );
 
     if (system.length === 0) {
@@ -197,7 +197,7 @@ app.get("/api/systems/:id/data", authMiddleware, async (req, res) => {
 
     const [system] = await pool.query(
       "SELECT * FROM systems WHERE id = ? AND user_id = ?",
-      [req.params.id, req.userId]
+      [req.params.id, req.userId],
     );
 
     if (system.length === 0) {
@@ -209,7 +209,7 @@ app.get("/api/systems/:id/data", authMiddleware, async (req, res) => {
       WHERE system_id = ? 
       AND created_at >= DATE_SUB(NOW(), INTERVAL ? HOUR)
       ORDER BY created_at DESC`,
-      [req.params.id, hours]
+      [req.params.id, hours],
     );
 
     res.json(data);
@@ -246,7 +246,7 @@ app.post("/api/sensor-data", async (req, res) => {
 
     const [systems] = await pool.query(
       "SELECT id FROM systems WHERE device_id = ?",
-      [device_id]
+      [device_id],
     );
 
     if (systems.length === 0) {
@@ -267,11 +267,11 @@ app.post("/api/sensor-data", async (req, res) => {
         humidity,
         battery,
         solar_voltage,
-      ]
+      ],
     );
 
     console.log(
-      `[${new Date().toISOString()}] Data recorded for device: ${device_id}`
+      `[${new Date().toISOString()}] Data recorded for device: ${device_id}`,
     );
 
     res.json({ success: true, message: "Data recorded" });
@@ -285,7 +285,7 @@ app.post("/api/sensor-data", async (req, res) => {
 async function collectSensorData() {
   try {
     console.log(
-      `[${new Date().toISOString()}] Starting sensor data collection...`
+      `[${new Date().toISOString()}] Starting sensor data collection...`,
     );
 
     // Get all registered systems/devices
@@ -305,7 +305,7 @@ async function collectSensorData() {
         // Alternative: const sensorUrl = `${SENSOR_API_URL}/data?device=${system.device_id}`;
 
         console.log(
-          `[${new Date().toISOString()}] Fetching data from: ${sensorUrl}`
+          `[${new Date().toISOString()}] Fetching data from: ${sensorUrl}`,
         );
 
         const response = await axios.get(sensorUrl, {
@@ -326,7 +326,7 @@ async function collectSensorData() {
           console.error(
             `[${new Date().toISOString()}] Invalid data format from ${
               system.device_id
-            }`
+            }`,
           );
           continue;
         }
@@ -339,7 +339,7 @@ async function collectSensorData() {
         // Store the data using the same endpoint
         await axios.post(
           `http://localhost:${PORT}/api/sensor-data`,
-          sensorData
+          sensorData,
         );
 
         console.log(
@@ -353,25 +353,25 @@ async function collectSensorData() {
             humidity: sensorData.humidity,
             battery: sensorData.battery,
             solar: sensorData.solar_voltage,
-          }
+          },
         );
       } catch (deviceError) {
         console.error(
           `[${new Date().toISOString()}] Failed to collect data for ${
             system.device_id
           }:`,
-          deviceError.message
+          deviceError.message,
         );
       }
     }
 
     console.log(
-      `[${new Date().toISOString()}] Sensor data collection completed.`
+      `[${new Date().toISOString()}] Sensor data collection completed.`,
     );
   } catch (error) {
     console.error(
       `[${new Date().toISOString()}] Sensor collection error:`,
-      error.message
+      error.message,
     );
   }
 }

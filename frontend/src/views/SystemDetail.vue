@@ -20,6 +20,16 @@
             <p class="text-gray-600 mt-2">{{ system?.device_id }}</p>
           </div>
           <div class="flex items-center gap-3">
+            <button
+              @click="refreshData"
+              :disabled="loading"
+              class="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-xl font-medium text-sm hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              <svg class="w-4 h-4" :class="loading ? 'animate-spin' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+              <span>{{ loading ? 'Refreshing...' : 'Refresh' }}</span>
+            </button>
             <span
               :class="[
                 'px-4 py-2 rounded-xl font-medium text-sm border-2',
@@ -379,6 +389,8 @@ import { systemService } from '../services/api';
 import { Chart, registerables } from 'chart.js';
 import gsap from 'gsap';
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3003/api";
+
 Chart.register(...registerables);
 
 const route = useRoute();
@@ -397,6 +409,7 @@ const historyChart = ref(null);
 
 let charts = [];
 let refreshInterval = null;
+let eventSource = null;
 
 // Table sorting and filtering
 const sortTable = (field) => {
@@ -552,9 +565,9 @@ const criticalAlerts = computed(() => {
 
 // Helper functions for status indicators
 const getBatteryCardClass = (battery) => {
-  if (battery < 20) return 'bg-gradient-to-r from-red-50 to-red-100/50';
-  if (battery < 40) return 'bg-gradient-to-r from-amber-50 to-amber-100/50';
-  return 'bg-gradient-to-r from-emerald-50 to-emerald-100/50';
+  if (battery < 20) return 'bg-gradient-to-r from-red-50 to-red-100/50 border-red-300';
+  if (battery < 40) return 'bg-gradient-to-r from-amber-50 to-amber-100/50 border-amber-300';
+  return 'bg-gradient-to-r from-emerald-50 to-emerald-100/50 border-emerald-300';
 };
 
 const getBatteryTextClass = (battery) => {
@@ -576,9 +589,9 @@ const getBatteryLabel = (battery) => {
 };
 
 const getPhCardClass = (ph) => {
-  if (ph < 5.5 || ph > 7.5) return 'bg-gradient-to-r from-red-50 to-red-100/50';
-  if (ph < 6.0 || ph > 7.0) return 'bg-gradient-to-r from-amber-50 to-amber-100/50';
-  return 'bg-gradient-to-r from-blue-50 to-blue-100/50';
+  if (ph < 5.5 || ph > 7.5) return 'bg-gradient-to-r from-red-50 to-red-100/50 border-red-300';
+  if (ph < 6.0 || ph > 7.0) return 'bg-gradient-to-r from-amber-50 to-amber-100/50 border-amber-300';
+  return 'bg-gradient-to-r from-blue-50 to-blue-100/50 border-blue-300';
 };
 
 const getPhTextClass = (ph) => {
@@ -608,9 +621,9 @@ const getPhRecommendation = (ph) => {
 };
 
 const getTempCardClass = (temp) => {
-  if (temp > 40 || temp < 10) return 'bg-gradient-to-r from-red-50 to-red-100/50';
-  if (temp > 35 || temp < 15) return 'bg-gradient-to-r from-amber-50 to-amber-100/50';
-  return 'bg-gradient-to-r from-emerald-50 to-emerald-100/50';
+  if (temp > 40 || temp < 10) return 'bg-gradient-to-r from-red-50 to-red-100/50 border-red-300';
+  if (temp > 35 || temp < 15) return 'bg-gradient-to-r from-amber-50 to-amber-100/50 border-amber-300';
+  return 'bg-gradient-to-r from-emerald-50 to-emerald-100/50 border-emerald-300';
 };
 
 const getTempTextClass = (temp) => {
@@ -634,9 +647,9 @@ const getTempStatus = (temp) => {
 };
 
 const getHumidityCardClass = (humidity) => {
-  if (humidity > 85) return 'bg-gradient-to-r from-amber-50 to-amber-100/50';
-  if (humidity < 40) return 'bg-gradient-to-r from-amber-50 to-amber-100/50';
-  return 'bg-gradient-to-r from-cyan-50 to-cyan-100/50';
+  if (humidity > 85) return 'bg-gradient-to-r from-amber-50 to-amber-100/50 border-amber-300';
+  if (humidity < 40) return 'bg-gradient-to-r from-amber-50 to-amber-100/50 border-amber-300';
+  return 'bg-gradient-to-r from-cyan-50 to-cyan-100/50 border-cyan-300';
 };
 
 const getHumidityTextClass = (humidity) => {
@@ -653,9 +666,9 @@ const getDiseaseRiskLevel = (data) => {
 
 const getDiseaseRiskCardClass = (data) => {
   const level = getDiseaseRiskLevel(data);
-  if (level === 'High') return 'bg-gradient-to-r from-red-50 to-red-100/50';
-  if (level === 'Medium') return 'bg-gradient-to-r from-amber-50 to-amber-100/50';
-  return 'bg-gradient-to-r from-emerald-50 to-emerald-100/50';
+  if (level === 'High') return 'bg-gradient-to-r from-red-50 to-red-100/50 border-red-300';
+  if (level === 'Medium') return 'bg-gradient-to-r from-amber-50 to-amber-100/50 border-amber-300';
+  return 'bg-gradient-to-r from-emerald-50 to-emerald-100/50 border-emerald-300';
 };
 
 const getDiseaseRiskTextClass = (data) => {
@@ -695,6 +708,7 @@ const getMoistureRecommendation = (moisture) => {
 };
 
 const fetchSystemData = async () => {
+  console.log('Fetching system data...');
   try {
     const systemData = await systemService.getById(route.params.id);
     system.value = systemData;
@@ -704,12 +718,72 @@ const fetchSystemData = async () => {
     
     if (history.length > 0) {
       latestData.value = history[0];
+      console.log('Latest data:', history[0]);
+    }
+    
+    // Reinitialize charts with new data if not in initial loading state
+    if (!loading.value) {
+      initCharts();
     }
   } catch (error) {
     console.error('Failed to fetch system data:', error);
   } finally {
     loading.value = false;
   }
+};
+
+const updateData = (newData) => {
+  console.log('Updating data:', newData);
+  // Update latest data
+  latestData.value = newData;
+  
+  // Add to historical data if it's new
+  const existingIndex = historicalData.value.findIndex(d => d.id === newData.id);
+  if (existingIndex === -1) {
+    historicalData.value.unshift(newData);
+    // Keep only last 100 readings
+    historicalData.value = historicalData.value.slice(0, 100);
+  } else {
+    historicalData.value[existingIndex] = newData;
+  }
+  
+  // Reinitialize charts with new data
+  initCharts();
+};
+
+const refreshData = async () => {
+  loading.value = true;
+  await fetchSystemData();
+  initCharts();
+  loading.value = false;
+};
+
+const connectToRealTimeUpdates = () => {
+  if (eventSource) {
+    eventSource.close();
+  }
+  
+  const token = localStorage.getItem("token");
+  const url = token ? `${API_URL}/systems/${route.params.id}/events?token=${token}` : `${API_URL}/systems/${route.params.id}/events`;
+  
+  eventSource = new EventSource(url);
+  
+  eventSource.onmessage = (event) => {
+    try {
+      const newData = JSON.parse(event.data);
+      updateData(newData);
+    } catch (error) {
+      console.error('Failed to parse real-time data:', error);
+    }
+  };
+  
+  eventSource.onerror = (error) => {
+    console.error('EventSource error:', error);
+    // Fallback to polling if SSE fails
+    if (!refreshInterval) {
+      refreshInterval = setInterval(fetchSystemData, 10000); // Fetch new data every 10 seconds
+    }
+  };
 };
 
 const createMoistureChart = () => {
@@ -928,6 +1002,9 @@ onMounted(async () => {
   await fetchSystemData();
   initCharts();
   
+  // Try real-time updates first
+  connectToRealTimeUpdates();
+  
   gsap.from('.widget-card', {
     opacity: 0,
     y: 30,
@@ -935,12 +1012,11 @@ onMounted(async () => {
     stagger: 0.1,
     ease: 'power3.out'
   });
-  
-  refreshInterval = setInterval(fetchSystemData, 60000);
 });
 
 onUnmounted(() => {
   charts.forEach(chart => chart.destroy());
   if (refreshInterval) clearInterval(refreshInterval);
+  if (eventSource) eventSource.close();
 });
 </script>
